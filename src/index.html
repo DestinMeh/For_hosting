@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>luxury_presence_assignment</title>
+    <link rel="stylesheet" href="./output.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  </head>
+  <body class = "antialiased">
+    <!-- Navigation Bar -->
+    <nav class="w-full bg-white shadow-md">
+      <div class="max-w-5xl mx-auto px-4 py-2 flex justify-between items-center">
+        <img src="images/logo.webp" alt="Logo" class="h-10 w-auto">
+
+        <ul class="flex space-x-8 text-base">
+          <li><a href="#" class="hover:text-blue-600 ">Home</a></li>
+          <li><a href="#" class="hover:text-blue-600 ">About</a></li>
+          <li><a href="#" class="hover:text-blue-600 ">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+   <!-- Hero Section: Handles background and main title -->
+    <section 
+        class="relative w-full bg-cover bg-center h-[clamp(400px,75vh,300px)] flex items-center justify-center"
+        style="background-image: url('images/background.jpg');"
+    >
+        <!-- BLACK SEMI OVERLAY -->
+        <div class="absolute inset-0 bg-black/30"></div>
+
+        <!-- Hero Title -->
+        <div class="relative z-20 text-center">
+             <h1 class="text-white text-3xl sm:text-4xl font-light uppercase tracking-widest header-text !text-white !opacity-90">
+                Find Your Dream Home
+             </h1>
+        </div>
+    </section>
+
+    <!-- === SEARCH LISTINGS COMPONENT (The Overlapping Part) === -->
+    <!-- FIX: Move this OUTSIDE the section and use -mt-16 to pull it up for the desired overlap. -->
+    <div class="w-full max-w-4xl mx-auto -mt-16 relative z-30 px-4 sm:px-6 lg:px-8">
+        
+        <!-- Search Form Card -->
+        <div class="bg-white p-6 sm:p-10 lg:p-12 shadow-xl rounded-lg border-t border-gray-100">
+            
+            <h2 class="header-text text-2xl sm:text-3xl font-light uppercase mb-8">
+                Search Listings
+            </h2>
+
+            <form class="grid grid-cols-2 md:grid-cols-6 gap-6">
+
+                <!-- Location -->
+                <div class="col-span-2 md:col-span-2">
+                    <label for="location" class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                    <div class="relative">
+                        <select id="location" class="w-full border border-gray-300 py-3 px-4 pr-10 rounded-lg appearance-none bg-white focus:outline-none focus:ring-1 focus:ring-stone-400">
+                            <option>Any Location</option>
+                            <option>Pahrump, NV</option>
+                            <option>Las Vegas, NV</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Type -->
+                <div class="col-span-2 md:col-span-2">
+                    <label for="type" class="block text-sm font-medium text-gray-700 mb-1">Type</label>
+                    <div class="relative">
+                        <select id="type" class="w-full border border-gray-300 py-3 px-4 pr-10 rounded-lg appearance-none bg-white focus:outline-none focus:ring-1 focus:ring-stone-400">
+                            <option>Any Type</option>
+                            <option>Single Family</option>
+                            <option>Condo</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sort By -->
+                <div class="col-span-2 md:col-span-2">
+                    <label for="sort" class="block text-sm font-medium text-gray-700 mb-1">Sort By</label>
+                    <div class="relative">
+                        <select id="sort" class="w-full border border-gray-300 py-3 px-4 pr-10 rounded-lg appearance-none bg-white focus:outline-none focus:ring-1 focus:ring-stone-400">
+                            <option>Newest Listings</option>
+                            <option>Price (Low to High)</option>
+                            <option>Price (High to Low)</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bedrooms -->
+                <div class="col-span-1 md:col-span-1">
+                    <label for="beds" class="block text-sm font-medium text-gray-700 mb-1">Bedrooms</label>
+                    <div class="relative">
+                        <select id="beds" class="w-full border border-gray-300 py-3 px-4 pr-10 rounded-lg appearance-none bg-white focus:outline-none focus:ring-1 focus:ring-stone-400">
+                            <option>Any Number</option>
+                            <option>1+</option>
+                            <option>2+</option>
+                            <option>3+</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Baths -->
+                <div class="col-span-1 md:col-span-1">
+                    <label for="baths" class="block text-sm font-medium text-gray-700 mb-1">Baths</label>
+                    <div class="relative">
+                        <select id="baths" class="w-full border border-gray-300 py-3 px-4 pr-10 rounded-lg appearance-none bg-white focus:outline-none focus:ring-1 focus:ring-stone-400">
+                            <option>Any Number</option>
+                            <option>1+</option>
+                            <option>2+</option>
+                            <option>3+</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z" clip-rule="evenodd"/></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Min Price -->
+                <div class="col-span-2 md:col-span-1">
+                    <label for="min-price" class="block text-sm font-medium text-gray-700 mb-1">Min Price</label>
+                    <input type="number" id="min-price" class="w-full border border-gray-300 py-3 px-4 rounded-lg focus:outline-none focus:ring-1 focus:ring-stone-400" placeholder="0">
+                </div>
+
+                <!-- Max Price -->
+                <div class="col-span-2 md:col-span-1">
+                    <label for="max-price" class="block text-sm font-medium text-gray-700 mb-1">Max Price</label>
+                    <input type="number" id="max-price" class="w-full border border-gray-300 py-3 px-4 rounded-lg focus:outline-none focus:ring-1 focus:ring-stone-400" placeholder="Max">
+                </div>
+
+                <!-- Search Button -->
+                <div class="col-span-2 md:col-span-2 flex items-end">
+                    <button type="submit" class="w-full bg-stone-200 text-stone-800 font-medium py-3 px-8 rounded-full shadow-lg hover:bg-stone-300 transition duration-300 tracking-wider h-[46px]">
+                        SEARCH NOW
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <section class="w-full bg-white py-8">
+      <div class="max-w-7xl mx-auto px-6 lg:px-12">
+
+        <div class="flex flex-wrap items-center justify-around">
+
+          <!-- Logo 1 -->
+          <img 
+            src="images/equal_housing_logo.webp" 
+            alt="Company 1" 
+            class="h-16 object-contain opacity-80 hover:opacity-100 transition"
+          />
+
+          <!-- Logo 2 -->
+          <img 
+            src="images/pahrump_valley_logo.webp" 
+            alt="Company 2" 
+            class="h-16 object-contain opacity-80 hover:opacity-100 transition"
+          />
+
+          <!-- Logo 3 -->
+          <img 
+            src="images/realtor_logo.webp" 
+            alt="Company 3" 
+            class="h-16 object-contain opacity-80 hover:opacity-100 transition"
+          />
+
+          <!-- Logo 4 -->
+          <img 
+            src="images/ridge_logo.webp" 
+            alt="Company 4" 
+            class="h-16 object-contain opacity-80 hover:opacity-100 transition"
+          />
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Scrollable Content -->
+    <main class="bg-gray-50">
+      <section class="w-full bg-gray-50 py-10">
+      <div class="max-w-5xl mx-auto px-3 lg:px-12 space-y-10">
+        <h1 class="text-4xl font-light text-center text-gray-800 mb-12">
+          Our Services 
+        </h1>
+        <!-- Service ITEM 1 (Image Left / Text Right) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 items-center">
+          
+          <!-- IMAGE -->
+          <img 
+            src="images/service_1.webp"
+            alt="Real Estate Done Right"
+            class="w-full rounded-none shadow-lg object-cover h-40"
+          />
+
+          <!-- TEXT -->
+          <div>
+            <h2 class="text-3xl font-light text-gray-800 mb-4">
+              Real Estate Done Right
+            </h2>
+            <p class=" text-xs font-light text-gray-600 leading-relaxed">
+              Nervous about your property adventure? Don’t be. Whether you're getting ready 
+              to buy or sell your residence, looking at investment properties, or just curious 
+              about the markets, our team ensures you get the best experience possible!
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Service ITEM 2 (Text Left / Image Right) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+          <!-- TEXT -->
+          <div class="order-2 lg:order-1">
+            <h2 class="text-3xl font-light text-gray-800 mb-4">
+              Commercial & Residential
+            </h2>
+            <p class=" text-xs font-light text-gray-600 leading-relaxed">
+              Large or small, condo or mansion, we can find it and get it at the price that's right. 
+              Fixer-uppers? Luxury? We can help with all of it! We live, work, and play in this community— 
+              and we’re happy to help you find where to put your hard-earned dollars.
+            </p>
+          </div>
+
+          <!-- IMAGE -->
+          <img 
+            src="images/service_2.webp"
+            alt="Commercial & Residential"
+            class="order-1 lg:order-2 w-full rounded-none shadow-lg object-cover h-40"
+          />
+
+        </div>
+
+        <!-- Service ITEM 3 (Image Left / Text Right) -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+
+          <!-- IMAGE -->
+          <img 
+            src="images/service_3.webp"
+            alt="Rely on Expertise"
+            class="w-full rounded-none shadow-lg object-cover h-40"
+          />
+
+          <!-- TEXT -->
+          <div>
+            <h2 class="text-3xl font-light text-gray-800 mb-4">
+              Rely on Expertise
+            </h2>
+            <p class=" text-xs font-light text-gray-600 leading-relaxed">
+              If you have questions about affordability, credit, or loan options, trust us to connect 
+              you with the right people to get the answers you need in a timely fashion. We make sure 
+              you feel confident and educated every step of the way.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- About Us Section (New Design from Image) -->
+        <section class="py-10 px-4 bg-gray-800">
+            <div class="max-w-5xl mx-auto">
+                <h2 class="text-4xl font-light text-center text-white mb-12">
+                    Meet Your Trusted Advisor
+                </h2>
+
+                <!-- Agent Profile Card -->
+                <div class="bg-stone-bg p-8 sm:p-12 bg-white rounded-xl shadow-2xl overflow-hidden">
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 items-start">
+                        
+                        <!-- Left Column: Agent Photo & Quick Info -->
+                        <div class="col-span-1 flex flex-col items-center text-center lg:items-start lg:text-left">
+                            <img 
+                                src="images/marci_metzger_photo.webp" 
+                                alt="Marci Metzger - The Ridge Realty Group"
+                                class="w-full h-auto max-w-xs lg:max-w-none rounded-xl shadow-xl mb-6 object-cover"
+                                onerror="this.onerror=null;this.src='https://placehold.co/300x400/1e3a8a/ffffff?text=Agent+Photo';"
+                            />
+                            
+                            <h4 class="text-xl font-bold text-primary-blue mt-4">Marci Metzger</h4>
+                            <p class="text-md text-gray-600 mb-4">Broker/Owner, The Ridge Realty Group</p>
+
+                            <a href="tel:2069196886" class="flex items-center text-lg text-accent-cta hover:text-blue-700 font-semibold">
+                                <!-- Phone Icon -->
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" /></svg>
+                                (206) 919-6886
+                            </a>
+                        </div>
+                        
+                        <!-- Right Column: Biography -->
+                        <div class="col-span-1 lg:col-span-2 space-y-6">
+                            <h3 class="text-3xl font-light text-black border-b pb-3 mb-4">Our Commitment to You</h3>
+                            <p class="text-s text-gray-700 leading-loose">
+                                Marci is dedicated to providing unparalleled service and expertise in the luxury real estate market. 
+                                With over 15 years of experience, she combines local market intelligence with a global network to 
+                                deliver exceptional results for every client. Her approach is built on integrity, personalized attention, 
+                                and a commitment to making your property goals a reality, whether you are buying your first home or 
+                                investing in a multi-million dollar estate.
+                            </p>
+                            <p class="text-s text-gray-700 leading-loose">
+                                We believe that true luxury is not just in the properties we sell, but in the seamless, stress-free 
+                                experience we provide. Every transaction is handled with discretion, professionalism, and relentless advocacy 
+                                for your best interests.
+                            </p>
+
+                            <div class="pt-1">
+                                <a href="#" class="inline-flex items-center bg-accent-cta text-black font-semibold py-3 px-8 rounded-full shadow-lg hover:transition duration-300 tracking-wider transform hover:-translate-y-0.5">
+                                    <span class="mr-2">View Listings</span>
+                                    <!-- Right Arrow Icon -->
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    
+    <!-- 2. Photo Gallery Section (Now an Elegant Sliding Carousel) -->
+        <section id="gallery" class="py-16 md:py-10 bg-white text-white">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-light text-center mb-12 uppercase tracking-wider text-black">Photo Gallery</h2>
+
+                <!-- Main Image Viewer -->
+                <div class="relative mb-4 rounded-xl overflow-hidden shadow-2xl">
+                    
+                    <!-- Carousel Viewport (Hides overflow) -->
+                    <div id="carousel-viewport" class="w-full h-[400px] md:h-[550px] overflow-hidden">
+                        
+                        <!-- Carousel Track (Holds all images and gets translated for sliding) -->
+                        <div id="carousel-track" class="flex h-full transition-transform duration-500 ease-in-out will-change-transform">
+                            <!-- Images will be dynamically injected here by JS, each taking 100% of the viewport width -->
+                        </div>
+                    </div>
+
+                    <!-- Navigation Arrows -->
+                    <button id="prev-button" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition z-10 text-2xl">
+                        &#10094;
+                    </button>
+                    <button id="next-button" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-75 transition z-10 text-2xl">
+                        &#10095;
+                    </button>
+                </div>
+                
+                <!-- Removed: Thumbnail Container -->
+            </div>
+        </section>
+
+    </main>
+
+
+  <footer class="w-full max-w-6xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="header-text text-xl sm:text-2xl font-light uppercase">
+                Call or Visit
+            </h2>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between">
+            
+            <!-- Left Side: Interactive Map -->
+            <div class="w-full md:w-1/2 md:pr-8 mb-6 md:mb-0 ">
+                <h3 class="text-xl font-light mb-3 text-black">Our Location</h3>
+                <div id="map" class="w-full h-full"></div>
+            </div>
+
+        <div class="flex flex-col lg:flex-row gap-12 lg:gap-20">
+
+            <!-- === LEFT COLUMN: SEND MESSAGE FORM === -->
+            <div class="lg:w-1/2">
+                <h3 class="text-lg font-light text-gray-700 mb-6">Send Message</h3>
+                
+                <form class="space-y-8 text-sm">
+                    <!-- Name Input -->
+                    <div class="relative">
+                        <input type="text" id="name" class="form-input peer" placeholder=" " required>
+                        <label for="name" class="absolute left-0 -top-6 text-gray-500 transition-all peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-6 peer-focus:text-sm">Name</label>
+                    </div>
+
+                    <!-- Email Input -->
+                    <div class="relative">
+                        <input type="email" id="email" class="form-input peer" placeholder=" " required>
+                        <label for="email" class="absolute left-0 -top-6 text-gray-500 transition-all peer-placeholder-shown:top-2 peer-placeholder-shown:text-base peer-focus:-top-6 peer-focus:text-sm">Email*</label>
+                    </div>
+
+                    <!-- Message Textarea -->
+                    <div class="relative pt-4">
+                        <textarea id="message" rows="4" class="form-input peer resize-none" placeholder=" " required></textarea>
+                        <label for="message" class="absolute left-0 -top-2 text-gray-500 transition-all peer-placeholder-shown:top-6 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm">Message</label>
+                    </div>
+
+                    <!-- SEND Button -->
+                    <div class="pt-4 flex justify-start">
+                        <button type="submit" class="bg-stone-200 text-stone-800 font-medium py-3 px-8 rounded-full shadow-lg hover:bg-stone-300 transition duration-300 tracking-wider">
+                            SEND
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Privacy Text -->
+                <p class="mt-8 text-xs text-gray-400 max-w-sm">
+                    This site is protected by reCAPTCHA and the Google <a href="#" class="underline hover:text-gray-600">Privacy Policy</a> and <a href="#" class="underline hover:text-gray-600">Terms of Service</a> apply.
+                </p>
+            </div>
+
+
+            <!-- === RIGHT COLUMN: CONTACT INFO & SOCIAL === -->
+            <div class="lg:w-1/2 relative">
+                
+                <!-- WhatsApp Button (Floating Element from Image) -->
+                <a href="https://wa.me/12069196886" target="_blank" class="absolute top-0 right-0 lg:-top-16 bg-gray-800 text-white flex items-center p-3 sm:p-4 rounded-full shadow-lg hover:bg-green-700 transition duration-300 transform -translate-y-1/2 sm:-translate-y-0">
+                    <!-- WhatsApp Icon (Simple SVG) -->
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12.016 3c-4.436 0-8.03 3.6-8.03 8.03 0 1.98.718 3.868 2.01 5.302l-.99 3.65 3.74-.97a7.99 7.99 0 005.27 1.99c4.436 0 8.03-3.6 8.03-8.03S16.452 3 12.016 3zm0 14.65c-1.6 0-3.1-.4-4.4-1.19l-.31-.18-3.1 1.25 1.28-3.04-.2-.33a6.52 6.52 0 01-1-3.41c0-3.6 2.92-6.52 6.52-6.52s6.52 2.92 6.52 6.52-2.92 6.52-6.52 6.52zM17.446 13.91l-.22-.11c-.72-.37-.88-.55-.83-.83.05-.28.16-.67.2-.72.04-.05.14-.11.23-.19.09-.08.19-.11.23-.17.04-.06.02-.13-.01-.19-.03-.06-.31-.77-.42-1.02-.12-.25-.24-.26-.33-.26-.09 0-.19-.01-.29-.01-.22 0-.58.11-.88.42-.3.3-.82.81-.82 1.99s.85 2.3 1.05 2.5.56.34 1.02.43 1.39.52 2.68.42c1.29-.1 2.38-.41 2.76-.85.38-.44.25-.85.18-.94-.07-.09-.25-.15-.53-.3z"/>
+                    </svg>
+                    Message us on WhatsApp
+                </a>
+
+                <div class="mt-8 lg:mt-0 text-gray-700 space-y-3">
+                    <!-- Agent Info -->
+                    <div>
+                        <p class="font-bold text-lg">Marci Metzger - THE RIDGE REALTY GROUP</p>
+                        <p class="mt-1">3190 HW-160, Suite F, Pahrump, Nevada 89048, United States</p>
+                    </div>
+                    
+                    <!-- Phone -->
+                    <a href="tel:2069196886" class="block text-lg text-red-600 hover:text-red-700 transition duration-150">
+                        (206) 919-6886
+                    </a>
+
+                    <!-- Office Hours -->
+                    <div>
+                        <h4 class="text-lg font-medium mb-3">Office Hours</h4>
+                        <p class="flex items-center text-sm">
+                            Open today: 
+                            <span class="ml-2 font-semibold">08:00 am – 07:00 pm</span>
+                            <span class="ml-2 text-gray-500 cursor-pointer hover:text-gray-700">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline ml-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                            </span>
+                        </p>
+                        <p class="text-sm mt-1">
+                            Open daily: <span class="ml-2">8:00 am - 7:00 pm</span>
+                        </p>
+                        <p class="text-sm italic mt-3 text-gray-500">
+                            Appointments outside office hours available upon request. Just call!
+                        </p>
+                    </div>
+
+                    <!-- === SOCIAL MEDIA ICONS (Requested Addition) === -->
+                    <div class="pt-6 border-t border-gray-200">
+                        <h4 class="text-lg font-medium mb-4">Connect With Us</h4>
+                        <div class="flex space-x-4">
+                            
+                            <!-- Facebook -->
+                            <a href="#" class="text-gray-600 hover:text-blue-600 transition duration-150" aria-label="Facebook">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+                            </a>
+                            
+                            <!-- LinkedIn -->
+                            <a href="#" class="text-gray-600 hover:text-blue-700 transition duration-150" aria-label="LinkedIn">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 6a2 2 0 100-4 2 2 0 000 4z"/></svg>
+                            </a>
+                            
+                            <!-- Instagram -->
+                            <a href="#" class="text-gray-600 hover:text-pink-600 transition duration-150" aria-label="Instagram">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-13c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm5-5c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/></svg>
+                            </a>
+                            
+                            <!-- Yelp (Using a Star Icon for a Review Platform) -->
+                            <a href="#" class="text-gray-600 hover:text-red-500 transition duration-150" aria-label="Yelp Reviews">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2.5l2.25 4.5 4.75.69-3.44 3.36.81 4.73L12 16.71l-4.37 2.3 0.81-4.73L4 7.69l4.75-.69L12 2.5z"/>
+                                </svg>
+                            </a>
+
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+      </div>
+    </footer>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+  
+        document.addEventListener('DOMContentLoaded', () => {
+            const carouselTrack = document.getElementById('carousel-track');
+            // Removed: const thumbnailContainer = document.getElementById('thumbnail-container');
+            const prevButton = document.getElementById('prev-button');
+            const nextButton = document.getElementById('next-button');
+
+            // Array of 7 image sources
+            const images = [
+                { src: "images/gallery/gallery_1.webp" },
+                { src: "images/gallery/gallery_2.webp" },
+                { src: "images/gallery/gallery_3.webp" },
+                { src: "images/gallery/gallery_4.webp"},
+                { src: "images/gallery/gallery_5.webp" },
+                { src: "images/gallery/gallery_6.webp" },
+                { src: "images/gallery/gallery_7.webp"  },
+            ];
+
+            let currentIndex = 0;
+
+            // Function to update the carousel track position
+            function updateGallery(index) {
+                const newIndex = (index + images.length) % images.length; // Ensure index wraps around
+                currentIndex = newIndex;
+
+                // Sliding effect: Move the carousel track
+                const offset = -currentIndex * 100; // Calculate percentage shift
+                carouselTrack.style.transform = `translateX(${offset}%)`;
+
+                // Removed: Thumbnail active state updates
+            }
+
+            // Function to render all images for the track
+            function renderGallery() {
+                
+                images.forEach((image, index) => {
+                    // Create the image element for the main carousel track
+                    const mainImg = document.createElement('img');
+                    mainImg.src = image.src;
+                    mainImg.alt = image.alt;
+                    // Important: each image in the track must take up 100% of the viewport width
+                    mainImg.classList.add('w-full', 'h-full', 'object-cover', 'object-center', 'flex-shrink-0');
+                    mainImg.loading = 'lazy';
+                    mainImg.dataset.index = index;
+
+                    // Add image to the track
+                    carouselTrack.appendChild(mainImg);
+
+                });
+            }
+
+            // Event listeners for carousel navigation buttons
+            prevButton.addEventListener('click', () => {
+                updateGallery(currentIndex - 1);
+            });
+
+            nextButton.addEventListener('click', () => {
+                updateGallery(currentIndex + 1);
+            });
+
+            // Initial setup
+            renderGallery();
+            updateGallery(0); // Load the first image
+        });
+
+       const coords = [36.202579, -115.983224];  // example: THE RIDGE REALTY GROUP
+        const map = L.map('map').setView(coords, 15);
+
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);  
+
+        L.marker(coords).addTo(map)
+          .bindPopup('The Ridge Realty Group')
+          .openPopup();
+    </script>
+    
+  </body>
+</html>
